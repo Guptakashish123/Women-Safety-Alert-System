@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin - Reports | Women Safety</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --secondary: #ff8fa3;
+            --dark: #2b2d42;
+            --light: #f8f9fa;
+            --admin: #7209b7;
+            --danger: #ef233c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
+                        url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(43, 45, 66, 0.95);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(114, 9, 183, 0.3);
+        }
+        
+        h2 {
+            color: var(--admin);
+            margin-bottom: 2rem;
+            font-weight: 600;
+            text-align: center;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 10px rgba(114, 9, 183, 0.3);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--admin), var(--primary));
+            border-radius: 3px;
+        }
+        
+        .reports-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 2rem 0;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .reports-table th {
+            background: linear-gradient(135deg, var(--admin), #5a189a);
+            color: white;
+            padding: 1.3rem;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+        }
+        
+        .reports-table td {
+            padding: 1.2rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.3s ease;
+        }
+        
+        .reports-table tr:hover td {
+            background-color: rgba(114, 9, 183, 0.15);
+            transform: translateX(5px);
+        }
+        
+        .reports-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .report-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .report-image:hover {
+            transform: scale(1.8);
+            z-index: 10;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+            border-color: var(--primary);
+        }
+        
+        .report-description {
+            max-width: 400px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            background-color: rgba(255, 143, 163, 0.2);
+            border: 1px solid var(--secondary);
+        }
+        
+        .back-link:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 143, 163, 0.4);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+        
+        .admin-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: var(--admin);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 1rem;
+            vertical-align: middle;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            max-width: 80%;
+            max-height: 80%;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
+        
+        @media (max-width: 992px) {
+            .admin-container {
+                padding: 1.5rem;
+            }
+            
+            .reports-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .report-description {
+                max-width: 300px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .reports-table th,
+            .reports-table td {
+                padding: 1rem;
+            }
+            
+            .report-description {
+                max-width: 200px;
+            }
+        }
+        
+        /* Animation for admin icon */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .admin-icon {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .admin-icon i {
+            font-size: 3.5rem;
+            color: var(--admin);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 50%;
+            box-shadow: 0 5px 20px rgba(114, 9, 183, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-icon">
+            <i class="fas fa-user-shield"></i>
+        </div>
+        
+        <h2>Submitted Reports <span class="admin-badge">Admin</span></h2>
+        
+        <table class="reports-table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="report : ${reports}" th:if="${!reports.isEmpty()}">
+                    <td>
+                        <div class="user-info">
+                            <div class="user-avatar" th:text="${report.user.name.substring(0,1)}"></div>
+                            <span th:text="${report.user.name}"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <p class="report-description" th:text="${report.description}"></p>
+                    </td>
+                    <td>
+                        <img th:if="${report.imagePath != null}" 
+                             th:src="@{${report.imagePath}}" 
+                             class="report-image"
+                             onclick="openModal(this.src)"/>
+                        <span th:if="${report.imagePath == null}">No image</span>
+                    </td>
+                </tr>
+                <tr th:if="${reports.isEmpty()}">
+                    <td colspan="3" class="empty-state">
+                        <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 1rem;"></i><br>
+                        No reports have been submitted yet
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <a th:href="@{/dashboard}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="modal" id="imageModal" onclick="closeModal()">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <script>
+        // Modal functionality for image preview
+        function openModal(src) {
+            event.stopPropagation();
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById("modalImage");
+            modal.style.display = "flex";
+            modalImg.src = src;
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = "none";
+        }
+
+        // Close modal when clicking outside the image
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

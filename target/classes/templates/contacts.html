@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Emergency Contacts - Women Safety</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --secondary: #ff8fa3;
+            --dark: #2b2d42;
+            --light: #f8f9fa;
+            --success: #38b000;
+            --warning: #ffaa00;
+            --danger: #ef233c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+            url('https://images.unsplash.com/photo-1532635241-17e820acc59f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: rgba(43, 45, 66, 0.9);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+        }
+
+        h3 {
+            color: var(--secondary);
+            margin: 2rem 0 1.5rem;
+            font-weight: 500;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .contacts-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 2rem 0;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .contacts-table th {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.2rem;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .contacts-table td {
+            padding: 1rem 1.2rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .contacts-table tr:hover td {
+            background-color: rgba(255, 77, 109, 0.2);
+            transform: translateX(5px);
+        }
+
+        .contacts-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .action-btn {
+            color: var(--danger);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: rgba(239, 35, 60, 0.1);
+            border: 1px solid var(--danger);
+        }
+
+        .action-btn:hover {
+            background-color: var(--danger);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(239, 35, 60, 0.3);
+        }
+
+        .add-form {
+            background: rgba(255, 77, 109, 0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            border: 1px solid var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 3rem;
+            border: none;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--dark);
+            font-size: 1rem;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 1rem;
+            top: 2.5rem;
+            color: var(--dark);
+            font-size: 1.2rem;
+        }
+
+        .submit-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: var(--secondary);
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            background-color: rgba(255, 143, 163, 0.2);
+            border: 1px solid var(--secondary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+
+        .phone-link {
+            color: white;
+            text-decoration: none;
+        }
+
+        .phone-link:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .contacts-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .form-group input {
+                padding-left: 2.5rem;
+            }
+
+            .form-group i {
+                left: 0.8rem;
+            }
+        }
+
+        .emergency-icon {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .emergency-icon i {
+            font-size: 3rem;
+            color: var(--primary);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="emergency-icon">
+        <i class="fas fa-phone-alt"></i>
+    </div>
+
+    <h2>Your Emergency Contacts</h2>
+
+    <table class="contacts-table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Role</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="contact : ${contacts}" th:if="${!contacts.isEmpty()}">
+            <td th:text="${contact.contactName}"></td>
+            <td><a href="tel:${contact.phone}" class="phone-link" th:text="${contact.phone}"></a></td>
+            <td th:text="${contact.role}"></td>
+            <td><a th:href="@{'/contacts/delete/' + ${contact.id}}" class="action-btn"><i class="fas fa-trash-alt"></i> Delete</a></td>
+        </tr>
+        <tr th:if="${contacts.isEmpty()}">
+            <td colspan="4" class="empty-state">You haven't added any emergency contacts yet</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Add New Contact</h3>
+
+    <form class="add-form" th:action="@{/contacts/add}" th:object="${newContact}" method="post">
+        <div class="form-group">
+            <label for="contactName">Contact Name</label>
+            <i class="fas fa-user"></i>
+            <input type="text" id="contactName" th:field="*{contactName}" required placeholder="Enter contact's full name"/>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <i class="fas fa-phone"></i>
+            <input type="text" id="phone" th:field="*{phone}" required placeholder="Enter phone number with country code"/>
+        </div>
+
+        <div class="form-group">
+            <label for="role">Relationship/Role</label>
+            <i class="fas fa-user-tag"></i>
+            <select id="role" th:field="*{role}" required>
+                <option value="">-- Select Role --</option>
+                <option value="Mother">Mother</option>
+                <option value="Father">Father</option>
+                <option value="Friend">Friend</option>
+                <option value="Police">Police</option>
+                <option value="Guardian">Guardian</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <button type="submit" class="submit-btn">
+            <i class="fas fa-plus-circle"></i> Add Contact
+        </button>
+    </form>
+
+    <a th:href="@{/dashboard}" class="back-link">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </a>
+</div>
+</body>
+</html>

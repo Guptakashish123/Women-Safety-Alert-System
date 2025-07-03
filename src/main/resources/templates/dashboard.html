@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard - Women Safety</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --secondary: #ff8fa3;
+            --dark: #2b2d42;
+            --light: #f8f9fa;
+            --danger: #ef233c;
+            --success: #38b000;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .dashboard-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: rgba(43, 45, 66, 0.9);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .welcome-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 2rem;
+        }
+        
+        .welcome-text {
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+        
+        .sos-section {
+            background: rgba(239, 35, 60, 0.15);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            border: 2px solid var(--danger);
+            transition: all 0.3s ease;
+        }
+        
+        .sos-section:hover {
+            box-shadow: 0 0 25px rgba(239, 35, 60, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        .sos-title {
+            color: var(--danger);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: none;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--dark);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.3);
+            background-color: white;
+        }
+        
+        .sos-button {
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            padding: 1.2rem 2rem;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(239, 35, 60, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 1rem;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .sos-button:hover {
+            background-color: #d90429;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(239, 35, 60, 0.6);
+            animation: none;
+        }
+        
+        .sos-button:active {
+            transform: translateY(0);
+        }
+        
+        #map {
+            height: 400px;
+            width: 100%;
+            margin: 2rem 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--secondary);
+            transition: all 0.3s ease;
+        }
+        
+        #map:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .map-instructions {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 143, 163, 0.2);
+            border: 1px solid var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-link:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 143, 163, 0.4);
+        }
+        
+        .success-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--success);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .success-toast.show {
+            transform: translateX(0);
+        }
+        
+        .location-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .location-btn:hover {
+            background-color: #ff3355;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .dashboard-container {
+                padding: 1.8rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-link {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="welcome-section">
+            <div class="welcome-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h2>Welcome, <span class="welcome-text" th:text="${user.name}"></span>!</h2>
+            <p class="welcome-text">Your safety is our priority</p>
+        </div>
+        
+        <!-- Success toast (shown via JavaScript) -->
+        <div class="success-toast" id="successToast">
+            <i class="fas fa-check-circle"></i>
+            <span>Alert sent successfully!</span>
+        </div>
+        
+        <div class="sos-section">
+            <h3 class="sos-title">
+                <i class="fas fa-bell"></i> Emergency SOS
+            </h3>
+            
+            <form th:action="@{/alert}" method="post">
+                <div class="form-group">
+                    <label for="latitude">Latitude</label>
+                    <input type="text" id="latitude" name="latitude" required placeholder="Click on map or enter coordinates" />
+                </div>
+                
+                <div class="form-group">
+                    <label for="longitude">Longitude</label>
+                    <input type="text" id="longitude" name="longitude" required placeholder="Click on map or enter coordinates" />
+                </div>
+                
+                <button type="button" class="location-btn" id="getLocationBtn">
+                    <i class="fas fa-location-arrow"></i> Use My Current Location
+                </button>
+                
+                <button type="submit" class="sos-button">
+                    <i class="fas fa-bell"></i> Send SOS Alert
+                </button>
+            </form>
+        </div>
+        
+        <p class="map-instructions">Click on the map below to select your emergency location</p>
+        <div id="map"></div>
+        
+        <div class="nav-links">
+            <a th:href="@{/contacts}" class="nav-link">
+                <i class="fas fa-address-book"></i> Emergency Contacts
+            </a>
+            <a th:href="@{/report}" class="nav-link">
+                <i class="fas fa-exclamation-triangle"></i> Report Incident
+            </a>
+            <a th:href="@{/logout}" class="nav-link">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- Replace with your real API key -->
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNJVXzjpMd-kqjDEac-bJUg2Dwn9PBmKg&callback=initMap">
+    </script>
+
+    <script>
+        // Show success toast if alert was sent
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('success') === 'alert') {
+                const toast = document.getElementById('successToast');
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 5000);
+            }
+            
+            // Current location button
+            document.getElementById('getLocationBtn').addEventListener('click', function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        document.getElementById('latitude').value = position.coords.latitude;
+                        document.getElementById('longitude').value = position.coords.longitude;
+                        
+                        // Center map on user's location
+                        const userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        map.setCenter(userLocation);
+                        
+                        // Add marker at user's location
+                        if (marker) {
+                            marker.setMap(null);
+                        }
+                        marker = new google.maps.Marker({
+                            position: userLocation,
+                            map: map,
+                            title: "Your location"
+                        });
+                    }, function(error) {
+                        alert("Could not get your location. Please enable location services or select manually on the map.");
+                    });
+                } else {
+                    alert("Geolocation is not supported by your browser. Please select your location on the map.");
+                }
+            });
+        });
+
+        let map;
+        let marker;
+
+        function initMap() {
+            const defaultLocation = { lat: 28.6139, lng: 77.2090 }; // Default: New Delhi
+
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 12,
+                center: defaultLocation,
+                styles: [
+                    {
+                        "featureType": "all",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                            {
+                                "color": "#ffffff"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "all",
+                        "elementType": "labels.text.stroke",
+                        "stylers": [
+                            {
+                                "visibility": "on"
+                            },
+                            {
+                                "color": "#000000"
+                            },
+                            {
+                                "weight": 2
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "all",
+                        "elementType": "labels.icon",
+                        "stylers": [
+                            {
+                                "visibility": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#000000"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "landscape",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#000000"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#000000"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "geometry.fill",
+                        "stylers": [
+                            {
+                                "color": "#2c2c2c"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "geometry.stroke",
+                        "stylers": [
+                            {
+                                "color": "#ff4d6d"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "geometry",
+                        "stylers": [
+                            {
+                                "color": "#000000"
+                            }
+                        ]
+                    }
+                ]
+            });
+
+            map.addListener("click", function (e) {
+                const lat = e.latLng.lat();
+                const lng = e.latLng.lng();
+
+                document.getElementById("latitude").value = lat;
+                document.getElementById("longitude").value = lng;
+
+                if (marker) {
+                    marker.setMap(null);
+                }
+
+                marker = new google.maps.Marker({
+                    position: { lat: lat, lng: lng },
+                    map: map,
+                    icon: {
+                        url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>

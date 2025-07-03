@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Report Incident - Women Safety</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --secondary: #ff8fa3;
+            --dark: #2b2d42;
+            --light: #f8f9fa;
+            --danger: #ef233c;
+            --success: #38b000;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
+                        url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .report-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: rgba(43, 45, 66, 0.95);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 77, 109, 0.3);
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .emergency-icon {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .emergency-icon i {
+            font-size: 3.5rem;
+            color: var(--danger);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 50%;
+            box-shadow: 0 5px 20px rgba(239, 35, 60, 0.4);
+        }
+        
+        h2 {
+            color: var(--danger);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+            position: relative;
+        }
+        
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--danger), var(--primary));
+            border-radius: 3px;
+        }
+        
+        .report-form {
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 2rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--secondary);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--dark);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            resize: vertical;
+        }
+        
+        .form-group textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.3);
+            background-color: white;
+        }
+        
+        .file-upload {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .file-upload-input {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+        
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            border: 2px dashed var(--secondary);
+            border-radius: 8px;
+            background-color: rgba(255, 143, 163, 0.1);
+            color: var(--secondary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .file-upload-label:hover {
+            background-color: rgba(255, 143, 163, 0.2);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .file-upload-label i {
+            font-size: 1.5rem;
+        }
+        
+        .file-name {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            display: none;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, var(--danger), var(--primary));
+            color: white;
+            border: none;
+            padding: 1.2rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(239, 35, 60, 0.4);
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(239, 35, 60, 0.6);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            background-color: rgba(255, 143, 163, 0.2);
+            border: 1px solid var(--secondary);
+        }
+        
+        .back-link:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 143, 163, 0.4);
+        }
+        
+        .preview-container {
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            border: 2px solid var(--secondary);
+            margin-top: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .report-container {
+                padding: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <div class="emergency-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        
+        <h2>Report an Incident</h2>
+        
+        <form class="report-form" th:action="@{/report}" method="post" th:object="${report}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="description">Incident Description</label>
+                <textarea id="description" th:field="*{description}" required placeholder="Please describe the incident in detail..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Upload Evidence (optional)</label>
+                <div class="file-upload">
+                    <input type="file" id="fileInput" name="file" class="file-upload-input" accept="image/*" onchange="previewImage(this)"/>
+                    <label for="fileInput" class="file-upload-label">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Choose an image or drag & drop here</span>
+                    </label>
+                    <div id="fileName" class="file-name"></div>
+                </div>
+                <div class="preview-container" id="previewContainer">
+                    <div>Image Preview:</div>
+                    <img id="imagePreview" class="image-preview" />
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-paper-plane"></i> Submit Report
+            </button>
+        </form>
+        
+        <a th:href="@{/dashboard}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <script>
+        function previewImage(input) {
+            const previewContainer = document.getElementById('previewContainer');
+            const imagePreview = document.getElementById('imagePreview');
+            const fileName = document.getElementById('fileName');
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+                fileName.textContent = 'Selected: ' + input.files[0].name;
+                fileName.style.display = 'block';
+            } else {
+                previewContainer.style.display = 'none';
+                fileName.style.display = 'none';
+            }
+        }
+
+        // Add drag and drop functionality
+        const fileUploadLabel = document.querySelector('.file-upload-label');
+        
+        fileUploadLabel.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadLabel.style.backgroundColor = 'rgba(255, 143, 163, 0.3)';
+            fileUploadLabel.style.borderColor = 'var(--primary)';
+        });
+        
+        fileUploadLabel.addEventListener('dragleave', () => {
+            fileUploadLabel.style.backgroundColor = 'rgba(255, 143, 163, 0.1)';
+            fileUploadLabel.style.borderColor = 'var(--secondary)';
+        });
+        
+        fileUploadLabel.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadLabel.style.backgroundColor = 'rgba(255, 143, 163, 0.1)';
+            fileUploadLabel.style.borderColor = 'var(--secondary)';
+            
+            const fileInput = document.getElementById('fileInput');
+            fileInput.files = e.dataTransfer.files;
+            previewImage(fileInput);
+        });
+    </script>
+</body>
+</html>
